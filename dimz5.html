@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<title>PROGRAM PEMULA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;font-family:'Orbitron',sans-serif}
+html,body{margin:0;padding:0;height:100%;background:linear-gradient(270deg,#0f172a,#1e293b,#0f172a);background-size:600% 600%;animation:bgScroll 20s ease infinite;color:white;display:flex;justify-content:center;align-items:center}
+@keyframes bgScroll{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.login-container,.app-container{position:relative;padding:30px;border-radius:20px;max-width:400px;width:90%;text-align:center;animation:bounceIn 1s ease;background-size:cover;background-position:center;background-repeat:no-repeat;background-blend-mode:overlay;box-shadow:0 0 25px #ef4444aa;overflow:hidden;z-index:1}
+.login-container{background-image:linear-gradient(270deg, rgba(15,23,42,0.9), rgba(30,41,59,0.9)), url('https://files.catbox.moe/f1rtjq.jpg')}
+.app-container{background-image:linear-gradient(270deg, rgba(15,23,42,0.8), rgba(30,41,59,0.8)), url('https://files.catbox.moe/7hluls.jpg');background-attachment:fixed}
+@keyframes bounceIn{0%{transform:translateY(100px);opacity:0}60%{transform:translateY(-10px);opacity:1}100%{transform:translateY(0)}}
+h2{margin-bottom:20px;font-size:24px;font-weight:bold;color:#f43f5e;text-shadow:0 0 10px #f43f5e80}
+input,select,button{width:100%;padding:12px;margin:10px 0;border-radius:10px;border:none;font-size:1rem;outline:none}
+input[type="text"],input[type="password"],input[type="file"],select{background:#1e293b;color:white;border:1px solid #475569}
+button{background:#ef4444;color:white;cursor:pointer;font-weight:bold;transition:0.3s ease}
+button:hover{animation:glowShake 0.8s infinite;background:#dc2626}
+@keyframes glowShake{0%,100%{box-shadow:0 0 10px #f43f5e,0 0 20px #f43f5e;transform:translateX(0)}25%{transform:translateX(2px)}50%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+canvas{display:none}
+#preview{margin-top:20px;max-width:100%;border-radius:12px;box-shadow:0 0 20px #f43f5e66;filter:blur(2px) brightness(0.8);opacity:0;transform:translateY(30px);animation:previewFadeIn 1s ease forwards;animation-delay:0.5s}
+@keyframes previewFadeIn{to{opacity:1;transform:translateY(0);filter:blur(0px) brightness(1)}}
+.hidden{display:none!important}
+footer{margin-top:20px;font-size:12px;color:#94a3b8}
+audio{display:none}
+.rain{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:0}
+.rain::before,.rain::after{content:'';position:absolute;width:100%;height:100%;background-image:radial-gradient(1px 10px at 10% 20%, rgba(255,255,255,0.2) 0%, transparent 100%),radial-gradient(1px 10px at 50% 40%, rgba(255,255,255,0.2) 0%, transparent 100%),radial-gradient(1px 10px at 80% 60%, rgba(255,255,255,0.2) 0%, transparent 100%);background-repeat:repeat;animation:rainFall 0.7s linear infinite}
+.rain::after{animation-delay:0.35s}
+@keyframes rainFall{from{transform:translateY(-100%)}to{transform:translateY(100%)}}
+#loadingBox{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.92);display:flex;justify-content:center;align-items:center;backdrop-filter:blur(5px);z-index:9999;flex-direction:column;color:#f43f5e;font-size:20px;letter-spacing:2px;display:none}
+.loader{width:60px;height:60px;border:6px solid #f43f5e55;border-top-color:#f43f5e;border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:15px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<audio id="loginAudio" autoplay loop>
+<source src="https://files.catbox.moe/7f5sm9.mp4" type="audio/mp4"/>
+</audio>
+<audio id="mainAudio" loop class="hidden">
+<source src="https://files.catbox.moe/ols6p0.mp4" type="audio/mp4"/>
+</audio>
+
+<div id="loadingBox">
+<div class="loader"></div>
+MEMPROSES HD...
+</div>
+
+<div class="login-container" id="loginPage">
+<div class="rain"></div>
+<h2>Login HD BRUTAL</h2>
+<input type="text" id="username" placeholder="Username" />
+<input type="password" id="password" placeholder="Password" />
+<button onclick="login()">Masuk</button>
+</div>
+
+<div class="app-container hidden" id="appPage">
+<div class="rain"></div>
+<h2>HD BRUTAL GELAP - Dimzz</h2>
+<input type="file" accept="image/*" id="inputImage" />
+
+<select id="effectSelect">
+<option value="brighten">✨ Mencerahkan</option>
+<option value="efiko">🌈 Efiko</option>
+<option value="smooth">💆 Halus</option>
+<option value="brutal">🔥 HD Brutal</option>
+<option value="capcut">🎬 CapCut (HD Senja)</option>
+<option value="hdpremium">⭐ HD Biru Terang</option>
+<option value="hdmix">💎 HD Gabungan (CapCut + Remini + Wink)</option>
+<option value="hdmix2">⚡ HD Gabungan Turbo</option>
+<option value="hdmix3">🔥 HD Gabungan V2 Neural</option>
+<option value="beauty">💖 Mode Beauty AI</option>
+<option value="anime">🎨 Anime Stylize</option>
+<option value="removeBG">🗑️ Hapus Latar Belakang</option>
+<option value="smartBG">🗑️ Hapus Latar Belakang Pintar</option>
+</select>
+
+<button onclick="enhanceImage()">Proses HD Anime Style</button>
+<button onclick="enhanceHDMix()" style="background:#3b82f6;">⚡ HD Gabungan Turbo</button>
+<button onclick="downloadImage()">Unduh Gambar HD</button>
+
+<canvas id="canvas"></canvas>
+<img id="preview" src="" alt="Preview Gambar HD" />
+<footer>&copy; Dimzz Kece 2025</footer>
+</div>
+
+<script>
+window.addEventListener("load",()=>{
+const loginAudio=document.getElementById("loginAudio");
+loginAudio.play().catch(()=>{document.body.addEventListener("click",()=>loginAudio.play(),{once:true})})
+})
+
+function login(){
+const u=document.getElementById("username").value.trim().toUpperCase();
+const p=document.getElementById("password").value.trim().toUpperCase();
+if(u==="DIMZZ"&&p==="BRUTAL"){
+document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("appPage").classList.remove("hidden");
+document.getElementById("loginAudio").pause();
+document.getElementById("mainAudio").classList.remove("hidden");
+document.getElementById("mainAudio").play().catch(()=>{document.body.addEventListener("click",()=>document.getElementById("mainAudio").play(),{once:true})})
+}else{alert("Username atau password salah!")}
+}
+
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+const preview=document.getElementById("preview");
+
+function enhanceImage(){
+applyEffect(document.getElementById("effectSelect").value);
+}
+function enhanceHDMix(){
+applyEffect("hdmix");
+}
+
+function applyEffect(effect){
+const input=document.getElementById("inputImage");
+if(!input.files[0])return alert("Pilih gambar terlebih dahulu.");
+document.getElementById("loadingBox").style.display="flex";
+const reader=new FileReader(),img=new Image();
+reader.onload=e=>{
+img.onload=()=>{
+// Untuk fitur Smart Background, langsung panggil fungsi khusus
+if(effect==="smartBG"){
+    removeBackgroundSmart(img);
+    return;
+}
+canvas.width=img.width;
+canvas.height=img.height;
+ctx.filter="none";
+ctx.drawImage(img,0,0);
+let d=ctx.getImageData(0,0,canvas.width,canvas.height),data=d.data;
+for(let i=0;i<data.length;i+=4){
+let r=data[i],g=data[i+1],b=data[i+2],a=data[i+3];
+if(effect==="brighten"){r*=1.15;g*=1.15;b*=1.15}
+else if(effect==="smooth"){let avg=(r+g+b)/3;r=avg*0.6+r*0.4;g=avg*0.6+g*0.4;b=avg*0.6+b*0.4}
+else if(effect==="brutal"){r=(r-128)*1.7+128;g=(g-128)*1.6+128;b=(b-128)*1.8+128}
+else if(effect==="capcut"){r*=1.1;g*=0.95;b*=1.25}
+else if(effect==="hdpremium"){r*=1.2;g*=1.25;b*=1.3}
+else if(effect==="hdmix"){r=r*1.2+10;g=g*1.15+8;b=b*1.25+12}
+else if(effect==="hdmix2"){r=(r-128)*1.45+128;g=(g-128)*1.35+128;b=(b-128)*1.55+128;r*=1.25;g*=1.2;b*=1.3}
+else if(effect==="hdmix3"){r=(r-128)*1.55+128;g=(g-128)*1.45+128;b=(b-128)*1.60+128;r*=1.35;g*=1.32;b*=1.38;r=r*1.10+8;g=g*1.08+6;b=b*1.12+10}
+else if(effect==="beauty"){let avg=(r+g+b)/3;r=r*0.8+avg*0.2+8;g=g*0.8+avg*0.2+10;b=b*0.8+avg*0.2+6}
+else if(effect==="anime"){let avg=(r+g+b)/3;r=avg*0.5+r*1.4;g=avg*0.5+g*1.3;b=avg*0.5+b*1.5;r=(r-128)*1.6+128;g=(g-128)*1.5+128;b=(b-128)*1.7+128}
+else if(effect==="removeBG"){if(r>200&&g>200&&b>200){a=0}}
+data[i]=r;data[i+1]=g;data[i+2]=b;data[i+3]=a;
+}
+ctx.putImageData(d,0,0);
+preview.src=canvas.toDataURL("image/png");
+setTimeout(()=>{document.getElementById("loadingBox").style.display="none"},900);
+};
+img.src=e.target.result;
+};
+reader.readAsDataURL(input.files[0]);
+}
+
+// Fungsi penghapus latar belakang pintar
+function removeBackgroundSmart(img){
+canvas.width = img.width;
+canvas.height = img.height;
+ctx.drawImage(img, 0, 0);
+let d = ctx.getImageData(0,0,canvas.width,canvas.height);
+let data = d.data;
+
+// Ambil warna background dari 4 sudut
+function avgColor(x,y){let i=(y*canvas.width+x)*4;return [data[i],data[i+1],data[i+2]];}
+let corners=[avgColor(0,0), avgColor(canvas.width-1,0), avgColor(0,canvas.height-1), avgColor(canvas.width-1,canvas.height-1)];
+let bg=[0,0,0];
+for(let i=0;i<3;i++){bg[i]=(corners[0][i]+corners[1][i]+corners[2][i]+corners[3][i])/4;}
+
+const threshold = 60;
+for(let i=0;i<data.length;i+=4){
+let r=data[i],g=data[i+1],b=data[i+2];
+let diff=Math.sqrt((r-bg[0])**2+(g-bg[1])**2+(b-bg[2])**2);
+if(diff<threshold){data[i+3]=0;}
+}
+ctx.putImageData(d,0,0);
+preview.src=canvas.toDataURL("image/png");
+setTimeout(()=>{document.getElementById("loadingBox").style.display="none"},900);
+}
+
+function downloadImage(){
+const link=document.createElement("a");
+link.download="Gambar-HD-Anime-Style.png";
+link.href=canvas.toDataURL("image/png");
+link.click();
+}
+</script>
+</body>
+</html>
